@@ -89,7 +89,7 @@ function TOOL:Click( tr )
 		self.Entity = tr.Entity
 		local physbone = tr.PhysicsBone
 		self.Bone = self.Entity:TranslatePhysBoneToBone( physbone ) or 0
-		self:GetOwner():SetNetworkedVar( "AdvBoneEntity", self.Entity )
+		self:GetOwner():SetNWEntity( "AdvBoneEntity", self.Entity )
 		net.Start( "UpdateAdvBoneMenu" )
 			net.WriteEntity( self.Entity )
 			net.WriteFloat( self.Bone )
@@ -127,7 +127,7 @@ function TOOL:BuildCPanel()
 	self.combo_bonelist.ChooseOption = function( pnl, val )
 		pnl:SetValue( val )
 		local bone = 0
-		local ent = LocalPlayer():GetNetworkedVar( "AdvBoneEntity" )
+		local ent = LocalPlayer():GetNWEntity( "AdvBoneEntity" )
 		for i = 0, ent:GetBoneCount() - 1 do
 			local name = ent:GetBoneName( i )
 			if ( name == val ) then
