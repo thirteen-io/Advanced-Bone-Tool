@@ -85,6 +85,7 @@ else
 end
 
 function TOOL:Click( tr )
+	if CLIENT then return true end
 	if ( IsValid( tr.Entity ) ) then
 		self.Entity = tr.Entity
 		local physbone = tr.PhysicsBone
