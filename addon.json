@@ -1,0 +1,10 @@
+{
+  "title":"Advanced Bone Tool",
+  "type":"tool",
+  "tags":[ "Fun" ],
+  "ignore":
+  [
+    ".git",
+    "*.md"
+  ]
+}
