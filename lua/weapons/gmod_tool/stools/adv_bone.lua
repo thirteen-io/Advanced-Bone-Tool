@@ -84,7 +84,8 @@ else
 	end )
 end
 
-function TOOL:Click( tr )
+function TOOL:LeftClick( tr )
+	-- Find entity that player is looking at
 	if CLIENT then return true end
 	if ( IsValid( tr.Entity ) ) then
 		self.Entity = tr.Entity
@@ -99,12 +100,16 @@ function TOOL:Click( tr )
 	return true
 end
 
-function TOOL:LeftClick( tr )
-	return self:Click( tr )
-end
-
 function TOOL:RightClick( tr )
-	return self:Click( tr )
+		-- Get Player
+		self.Entity = self:GetOwner()
+		local physbone = tr.PhysicsBone
+		self.Bone = self.Entity:TranslatePhysBoneToBone( physbone ) or 0
+		self:GetOwner():SetNWEntity( "AdvBoneEntity", self.Entity )
+		net.Start( "UpdateAdvBoneMenu" )
+			net.WriteEntity( self.Entity )
+			net.WriteFloat( self.Bone )
+		net.Send( self:GetOwner() )
 end
 
 function TOOL:BuildCPanel()
@@ -171,15 +176,15 @@ function TOOL:BuildCPanel()
 	--Scale
 	self:AddControl( "Header", { Description = "#tool.adv_bone.editscale" } )
 
-	self.slider_scale_x = self:AddControl( "Slider", { Label = "#tool.adv_bone.x", Type = "Float", Min = 0, Max = 20 } )
+	self.slider_scale_x = self:AddControl( "Slider", { Label = "#tool.adv_bone.x", Type = "Float", Min = -20, Max = 20 } )
 	self.slider_scale_x:SetValue( 0 )
 	self.slider_scale_x.OnValueChanged = function() UpdateBone() end
 
-	self.slider_scale_y = self:AddControl( "Slider", { Label = "#tool.adv_bone.y", Type = "Float", Min = 0, Max = 20 } )
+	self.slider_scale_y = self:AddControl( "Slider", { Label = "#tool.adv_bone.y", Type = "Float", Min = -20, Max = 20 } )
 	self.slider_scale_y:SetValue( 0 )
 	self.slider_scale_y.OnValueChanged = function() UpdateBone() end
 
-	self.slider_scale_z = self:AddControl( "Slider", { Label = "#tool.adv_bone.z", Type = "Float", Min = 0, Max = 20 } )
+	self.slider_scale_z = self:AddControl( "Slider", { Label = "#tool.adv_bone.z", Type = "Float", Min = -20, Max = 20 } )
 	self.slider_scale_z:SetValue( 0 )
 	self.slider_scale_z.OnValueChanged = function() UpdateBone() end
 
