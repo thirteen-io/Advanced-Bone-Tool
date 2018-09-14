@@ -102,6 +102,7 @@ function TOOL:LeftClick( tr )
 	if CLIENT then return true end
 	if ( IsValid( tr.Entity ) ) then
 		local ent = tr.Entity
+		if ( IsValid( ent.AttachedEntity ) ) then ent = ent.AttachedEntity end
 		local physbone = tr.PhysicsBone
 		self:SelectEntity( ent, physbone )
 	end
