@@ -71,7 +71,10 @@ if CLIENT then
 
 	local shouldGlow = false
 	hook.Add( "OnContextMenuOpen", "Advanced Bone Tool", function()
-		shouldGlow = ( LocalPlayer():GetTool().Name == "Advanced Bone Tool" )
+		local tool = LocalPlayer():GetTool()
+		if ( IsValid( tool ) ) then
+			shouldGlow = ( tool.Name == "Advanced Bone Tool" )
+		end
 	end )
 
 	hook.Add( "OnContextMenuClose", "Advanced Bone Tool", function()
