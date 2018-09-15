@@ -3,8 +3,8 @@ TOOL.Category = "Poser"
 
 if CLIENT then
 	language.Add( "tool.adv_bone.name", TOOL.Name )
-	language.Add( "tool.adv_bone.desc", "By Th13teen" )
-	language.Add( "tool.adv_bone.0", "Click to select object, C to edit bones." )
+	language.Add( "tool.adv_bone.desc", "Manipulate props and ragdolls!" )
+	language.Add( "tool.adv_bone.0", "Left click to select object, Right click to select self, C to edit bones." )
 
 	language.Add( "tool.adv_bone.bone", "Bone" )
 
@@ -84,12 +84,10 @@ else
 	end )
 end
 
-function TOOL:LeftClick( tr )
-	-- Find entity that player is looking at
+function TOOL:SelectEntity( ent, physbone )
 	if CLIENT then return true end
-	if ( IsValid( tr.Entity ) ) then
-		self.Entity = tr.Entity
-		local physbone = tr.PhysicsBone
+	if ( IsValid( ent ) ) then
+		self.Entity = ent
 		self.Bone = self.Entity:TranslatePhysBoneToBone( physbone ) or 0
 		self:GetOwner():SetNWEntity( "AdvBoneEntity", self.Entity )
 		net.Start( "UpdateAdvBoneMenu" )
@@ -100,16 +98,14 @@ function TOOL:LeftClick( tr )
 	return true
 end
 
+function TOOL:LeftClick( tr )
+	-- Find entity that player is looking at.
+	return self:SelectEntity( tr.Entity, tr.PhysicsBone )
+end
+
 function TOOL:RightClick( tr )
-		-- Get Player
-		self.Entity = self:GetOwner()
-		local physbone = tr.PhysicsBone
-		self.Bone = self.Entity:TranslatePhysBoneToBone( physbone ) or 0
-		self:GetOwner():SetNWEntity( "AdvBoneEntity", self.Entity )
-		net.Start( "UpdateAdvBoneMenu" )
-			net.WriteEntity( self.Entity )
-			net.WriteFloat( self.Bone )
-		net.Send( self:GetOwner() )
+	-- Select Self.
+	return self:SelectEntity( self:GetOwner(), 0 )
 end
 
 function TOOL:BuildCPanel()
