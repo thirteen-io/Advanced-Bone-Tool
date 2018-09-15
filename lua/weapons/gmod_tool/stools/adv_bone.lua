@@ -27,6 +27,10 @@ if CLIENT then
 
 			local panel = controlpanel.Get( "adv_bone" )
 
+			if ( !IsValid( panel.combo_bonelist ) ) then
+				return
+			end
+
 			local ang = ent:GetManipulateBoneAngles( bone ) or Angle( 0, 0, 0 )
 			local pos = ent:GetManipulateBonePosition( bone ) or Vector( 0, 0, 0 )
 			local scale = ent:GetManipulateBoneScale( bone ) or Vector( 1, 1, 1 )
