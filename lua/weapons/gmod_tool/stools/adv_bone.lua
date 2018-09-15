@@ -91,6 +91,7 @@ end
 function TOOL:SelectEntity( ent, physbone )
 	if CLIENT then return true end
 	if ( IsValid( ent ) ) then
+		if ( IsValid( ent.AttachedEntity ) ) then ent = ent.AttachedEntity end
 		self.Entity = ent
 		self.Bone = self.Entity:TranslatePhysBoneToBone( physbone ) or 0
 		self:GetOwner():SetNWEntity( "AdvBoneEntity", self.Entity )
