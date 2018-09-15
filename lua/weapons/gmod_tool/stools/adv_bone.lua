@@ -68,6 +68,26 @@ if CLIENT then
 		local bone = net.ReadFloat()
 		UpdateAdvBoneMenu( ent, bone )
 	end )
+
+	local shouldGlow = false
+	hook.Add( "OnContextMenuOpen", "Advanced Bone Tool", function()
+		shouldGlow = ( LocalPlayer():GetTool().Name == "Advanced Bone Tool" )
+	end )
+
+	hook.Add( "OnContextMenuClose", "Advanced Bone Tool", function()
+		shouldGlow = false
+	end )
+
+	hook.Add( "PreDrawHalos", "Advanced Bone Tool", function()
+		if ( !shouldGlow ) then return end
+		local ply = LocalPlayer()
+		local ent = ply:GetNWEntity( "AdvBoneEntity" )
+		local col = ply:GetWeaponColor() * 255
+		if ( IsValid( ent ) ) then
+			halo.Add( {ent}, Color( col.r, col.g, col.b ) )
+			halo.Add( {ent}, Color( 255, 255, 255, 100 ) )
+		end
+	end )
 else
 	util.AddNetworkString( "UpdateAdvBoneMenu" )
 	util.AddNetworkString( "UpdateAdvBoneSettings" )
