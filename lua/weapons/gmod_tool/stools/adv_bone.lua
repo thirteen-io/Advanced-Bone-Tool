@@ -31,6 +31,8 @@ if CLIENT then
 				return
 			end
 
+			if bone == -1 then bone = 0 end -- Apparently prop_physics return -1 as a "physics" bone that causes stuff to reset  every time you select those
+
 			local ang = ent:GetManipulateBoneAngles( bone ) or Angle( 0, 0, 0 )
 			local pos = ent:GetManipulateBonePosition( bone ) or Vector( 0, 0, 0 )
 			local scale = ent:GetManipulateBoneScale( bone ) or Vector( 1, 1, 1 )
